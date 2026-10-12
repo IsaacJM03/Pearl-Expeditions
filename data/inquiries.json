@@ -1,0 +1,85 @@
+[
+  {
+    "id": "inq-1791805926034-72ezz",
+    "interest": "hacker_interest",
+    "fullName": "Jane Doe",
+    "email": "jane@test.org",
+    "phoneOrWhatsApp": "+256700000000",
+    "country": "Uganda",
+    "travelType": "individual",
+    "dynamicFields": {},
+    "message": "A valid inquiry message here.",
+    "status": "new",
+    "assignedTo": "Collins Ssegawa",
+    "slaDeadline": "2026-10-13T11:52:06.034Z",
+    "createdAt": "2026-10-12T11:52:06.034Z",
+    "updatedAt": "2026-10-12T11:52:06.034Z"
+  },
+  {
+    "id": "inq-seed-01",
+    "interest": "student_placement",
+    "fullName": "Elena Rostova",
+    "email": "elena.rostova@edinburgh.ac.uk",
+    "phoneOrWhatsApp": "+44 7700 900451",
+    "country": "United Kingdom",
+    "travelType": "individual",
+    "dynamicFields": {
+      "placementSector": "medical_healthcare",
+      "durationWeeks": 6,
+      "targetMonth": "June 2026",
+      "universityName": "University of Edinburgh Medical School",
+      "fieldOfStudy": "MBChB Medicine Year 4",
+      "safariAddonInterested": true
+    },
+    "message": "Seeking an 8-week pre-graduation clinical elective in obstetrics and tropical medicine. Need institutional sign-off for logbook hours.",
+    "status": "corrupted_status",
+    "assignedTo": "Collins Ssegawa",
+    "notes": "Top candidate. Sent preliminary hospital elective syllabus. Awaiting confirmation of visa dates.",
+    "slaDeadline": "2026-10-13T05:52:06.032Z",
+    "createdAt": "2026-10-12T05:52:06.034Z",
+    "updatedAt": "2026-10-12T11:52:10.684Z"
+  },
+  {
+    "id": "inq-seed-02",
+    "interest": "university_partnership",
+    "fullName": "Dr. Marcus Vance",
+    "email": "mvance@georgetown.edu",
+    "phoneOrWhatsApp": "+1 202 555 0192",
+    "country": "United States",
+    "travelType": "group",
+    "dynamicFields": {
+      "departmentOrFaculty": "Department of Global Health & Nursing",
+      "estimatedCohortSize": 12,
+      "targetTravelDates": "January 2027",
+      "chaperoneNeeds": true
+    },
+    "message": "Exploring institutional partnership for a 2-week faculty-led cohort in maternal health systems and community outreach.",
+    "status": "contacted",
+    "assignedTo": "Patricia Ssegawa",
+    "notes": "Zoom call held. Sent RAMS safety dossier and AMREF aero-evacuation documentation.",
+    "slaDeadline": "2026-10-12T09:52:06.034Z",
+    "createdAt": "2026-10-11T07:52:06.034Z",
+    "updatedAt": "2026-10-11T15:52:06.034Z"
+  },
+  {
+    "id": "inq-seed-03",
+    "interest": "post_safari",
+    "fullName": "Liam & Sarah Jenkins",
+    "email": "liam.jenkins@gmail.com",
+    "phoneOrWhatsApp": "+61 491 570 156",
+    "country": "Australia",
+    "travelType": "group",
+    "dynamicFields": {
+      "safariPackage": "5_day_post_placement",
+      "travelersCount": 2,
+      "targetTravelDates": "August 2026"
+    },
+    "message": "Sarah will be finishing her nursing placement in Masaka and we wish to book the 5-day Queen Elizabeth & Bunyonyi safari as her graduation reward.",
+    "status": "application_sent",
+    "assignedTo": "Collins Ssegawa",
+    "notes": "Confirmed Land Cruiser availability and Bunyonyi eco-cottage reservations.",
+    "slaDeadline": "2026-10-12T23:52:06.034Z",
+    "createdAt": "2026-10-11T23:52:06.034Z",
+    "updatedAt": "2026-10-12T07:52:06.034Z"
+  }
+]

@@ -8,7 +8,12 @@ export async function PATCH(
 ) {
   try {
     const { id } = await context.params;
-    const body = await request.json();
+    let body: { status?: string; notes?: string; assignedTo?: string };
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON in request body", success: false }, { status: 400 });
+    }
 
     const result = await updateInquiry(id, {
       status: body.status as InquiryStatus | undefined,
@@ -17,7 +22,8 @@ export async function PATCH(
     });
 
     if (!result.success) {
-      return NextResponse.json({ error: "Inquiry not found or update failed", success: false }, { status: 404 });
+      const status = result.error?.includes("Invalid") ? 400 : 404;
+      return NextResponse.json({ error: result.error || "Inquiry not found", success: false }, { status });
     }
 
     return NextResponse.json({ inquiry: result.inquiry, success: true });

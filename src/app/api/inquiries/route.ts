@@ -27,7 +27,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const forwardedFor = request.headers.get("x-forwarded-for");
-    const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : "127.0.0.1";
+    const realIp = request.headers.get("x-real-ip");
+    const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : realIp?.trim() || "127.0.0.1";
 
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
@@ -36,7 +37,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = (await request.json()) as InquiryFormData;
+    let body: InquiryFormData;
+    try {
+      body = (await request.json()) as InquiryFormData;
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON in request body", success: false }, { status: 400 });
+    }
 
     const result = await saveInquiry(body);
 

@@ -1,6 +1,22 @@
 import fs from "fs/promises";
 import path from "path";
-import type { Inquiry, InquiryFormData, InquiryStatus } from "@/types/inquiry";
+import type { Inquiry, InquiryFormData, InquiryInterest, InquiryStatus } from "@/types/inquiry";
+
+export const VALID_INTERESTS: InquiryInterest[] = [
+  "student_placement",
+  "volunteer",
+  "post_safari",
+  "leisure_safari",
+  "university_partnership"
+];
+
+export const VALID_STATUSES: InquiryStatus[] = [
+  "new",
+  "contacted",
+  "application_sent",
+  "confirmed",
+  "completed_lost"
+];
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const INQUIRIES_FILE = path.join(DATA_DIR, "inquiries.json");
@@ -12,6 +28,15 @@ const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 
 export function checkRateLimit(ip: string): boolean {
   const now = Date.now();
+
+  if (rateLimitMap.size > 500) {
+    for (const [key, val] of rateLimitMap.entries()) {
+      if (now > val.resetTime) {
+        rateLimitMap.delete(key);
+      }
+    }
+  }
+
   const record = rateLimitMap.get(ip);
 
   if (!record || now > record.resetTime) {
@@ -98,55 +123,76 @@ const initialSeedInquiries: Inquiry[] = [
   }
 ];
 
+async function writeInquiriesFile(inquiries: Inquiry[]): Promise<void> {
+  await fs.mkdir(DATA_DIR, { recursive: true });
+  const tmpFile = path.join(DATA_DIR, `inquiries.${Date.now()}.${Math.random().toString(36).substring(2, 6)}.tmp`);
+  await fs.writeFile(tmpFile, JSON.stringify(inquiries, null, 2), "utf-8");
+  await fs.rename(tmpFile, INQUIRIES_FILE);
+}
+
+function getSeedInquiries(): Inquiry[] {
+  return JSON.parse(JSON.stringify(initialSeedInquiries));
+}
+
 export async function getInquiries(): Promise<Inquiry[]> {
   try {
     await fs.mkdir(DATA_DIR, { recursive: true });
     const content = await fs.readFile(INQUIRIES_FILE, "utf-8");
     const data = JSON.parse(content);
-    return Array.isArray(data) ? data : initialSeedInquiries;
+    return Array.isArray(data) ? data : getSeedInquiries();
   } catch {
-    // If file doesn't exist, seed it
+    const seed = getSeedInquiries();
     try {
-      await fs.writeFile(INQUIRIES_FILE, JSON.stringify(initialSeedInquiries, null, 2), "utf-8");
+      await writeInquiriesFile(seed);
     } catch {
       // Ignore write errors in read-only environment
     }
-    return initialSeedInquiries;
+    return seed;
   }
 }
 
 export async function saveInquiry(formData: InquiryFormData): Promise<{ success: boolean; inquiry?: Inquiry; error?: string }> {
+  if (!formData || typeof formData !== "object") {
+    return { error: "Invalid inquiry submission payload.", success: false };
+  }
+
   // 1. Honeypot check
   if (formData.botTrap && formData.botTrap.trim().length > 0) {
     return { error: "Spam detected.", success: false };
   }
 
-  // 2. Field validations
-  if (!formData.fullName || formData.fullName.trim().length < 2) {
-    return { error: "Please enter your full name.", success: false };
+  // 2. Interest check
+  if (!formData.interest || !VALID_INTERESTS.includes(formData.interest)) {
+    return { error: "Please select a valid area of interest.", success: false };
+  }
+
+  // 3. Field validations
+  if (!formData.fullName || formData.fullName.trim().length < 2 || formData.fullName.trim().length > 120) {
+    return { error: "Please enter your full name (2 to 120 characters).", success: false };
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!formData.email || !emailRegex.test(formData.email.trim())) {
+  if (!formData.email || !emailRegex.test(formData.email.trim()) || formData.email.trim().length > 254) {
     return { error: "Please enter a valid email address.", success: false };
   }
 
-  if (!formData.phoneOrWhatsApp || formData.phoneOrWhatsApp.trim().length < 6) {
+  if (!formData.phoneOrWhatsApp || formData.phoneOrWhatsApp.trim().length < 6 || formData.phoneOrWhatsApp.trim().length > 35) {
     return { error: "Please enter a valid phone or WhatsApp number.", success: false };
   }
 
-  if (!formData.country || formData.country.trim().length < 2) {
+  if (!formData.country || formData.country.trim().length < 2 || formData.country.trim().length > 80) {
     return { error: "Please specify your country of residence.", success: false };
   }
 
-  if (!formData.message || formData.message.trim().length < 10) {
-    return { error: "Please provide a short description of your goals or questions.", success: false };
+  if (!formData.message || formData.message.trim().length < 10 || formData.message.trim().length > 5000) {
+    return { error: "Please provide a short description of your goals or questions (min. 10 characters).", success: false };
   }
 
   if (!formData.safeguardingAgreed) {
     return { error: "You must agree to our ethical volunteering and safeguarding principles.", success: false };
   }
 
+  const travelType = formData.travelType === "group" ? "group" : "individual";
   const now = new Date();
   const slaDeadline = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours SLA guarantee
 
@@ -157,7 +203,7 @@ export async function saveInquiry(formData: InquiryFormData): Promise<{ success:
     email: formData.email.trim().toLowerCase(),
     phoneOrWhatsApp: formData.phoneOrWhatsApp.trim(),
     country: formData.country.trim(),
-    travelType: formData.travelType,
+    travelType,
     dynamicFields: formData.dynamicFields || {},
     message: formData.message.trim(),
     status: "new",
@@ -170,8 +216,7 @@ export async function saveInquiry(formData: InquiryFormData): Promise<{ success:
   try {
     const inquiries = await getInquiries();
     inquiries.unshift(newInquiry);
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    await fs.writeFile(INQUIRIES_FILE, JSON.stringify(inquiries, null, 2), "utf-8");
+    await writeInquiriesFile(inquiries);
 
     // Simulated Auto-Reply & Admin notification logs
     console.log(`[Auto-Reply Email Dispatched] To: ${newInquiry.email} | SLA Guarantee: 24 Hours`);
@@ -187,32 +232,36 @@ export async function saveInquiry(formData: InquiryFormData): Promise<{ success:
 export async function updateInquiry(
   id: string,
   updates: { status?: InquiryStatus; notes?: string; assignedTo?: string }
-): Promise<{ success: boolean; inquiry?: Inquiry }> {
+): Promise<{ success: boolean; inquiry?: Inquiry; error?: string }> {
+  if (updates.status && !VALID_STATUSES.includes(updates.status)) {
+    return { success: false, error: "Invalid status value." };
+  }
+
   const inquiries = await getInquiries();
   const index = inquiries.findIndex((inq) => inq.id === id);
 
   if (index === -1) {
-    return { success: false };
+    return { success: false, error: "Inquiry not found." };
   }
 
   const updated: Inquiry = {
     ...inquiries[index],
-    ...updates,
+    ...(updates.status ? { status: updates.status } : {}),
+    ...(updates.notes !== undefined ? { notes: updates.notes.slice(0, 5000) } : {}),
+    ...(updates.assignedTo !== undefined ? { assignedTo: updates.assignedTo.trim().slice(0, 80) } : {}),
     updatedAt: new Date().toISOString()
   };
 
   inquiries[index] = updated;
 
   try {
-    await fs.writeFile(INQUIRIES_FILE, JSON.stringify(inquiries, null, 2), "utf-8");
+    await writeInquiriesFile(inquiries);
     return { success: true, inquiry: updated };
   } catch (err) {
     console.error("Error updating inquiry:", err);
-    return { success: false };
+    return { success: false, error: "Failed to update inquiry." };
   }
 }
-
-
 
 export function formatInquiriesToCSV(inquiries: Inquiry[]): string {
   const headers = [
@@ -235,11 +284,12 @@ export function formatInquiriesToCSV(inquiries: Inquiry[]): string {
   ];
 
   const rows = inquiries.map((inq) => {
-    const sectorOrPkg = inq.dynamicFields.placementSector || inq.dynamicFields.safariPackage || inq.dynamicFields.departmentOrFaculty || "";
-    const duration = inq.dynamicFields.durationWeeks || "";
-    const uni = inq.dynamicFields.universityName || "";
+    const df = inq.dynamicFields || {};
+    const sectorOrPkg = df.placementSector || df.safariPackage || df.departmentOrFaculty || "";
+    const duration = df.durationWeeks || "";
+    const uni = df.universityName || "";
 
-    const clean = (val: unknown) => `"${String(val ?? "").replace(/"/g, '""').replace(/\n/g, " ")}"`;
+    const clean = (val: unknown) => `"${String(val ?? "").replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
 
     return [
       clean(inq.id),
