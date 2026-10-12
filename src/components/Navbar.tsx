@@ -4,14 +4,15 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Menu, X, Compass, ArrowRight, ShieldCheck } from "lucide-react";
+import { Menu, X, Compass, ArrowRight, ShieldCheck, ChevronDown } from "lucide-react";
 
-const navLinks = [
-  { name: "Field Programs", href: "/programs" },
-  { name: "About Us", href: "/about" },
-  { name: "Educators Hub", href: "/educators" },
-  { name: "Impact & Reciprocity", href: "/impact" },
-  { name: "Contact", href: "/contact" },
+const mainNavLinks = [
+  { name: "Student Placements", href: "/programs/student-placements" },
+  { name: "Volunteer Uganda", href: "/volunteer-uganda" },
+  { name: "Safaris & Tours", href: "/tours/5-day-post-placement-safari" },
+  { name: "About & Safety", href: "/about-and-safety" },
+  { name: "Safeguarding", href: "/safeguarding" },
+  { name: "For Universities", href: "/for-universities" }
 ];
 
 export default function Navbar() {
@@ -26,6 +27,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-parchment/95 border-b border-forest/10 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        {/* Brand Logo & Tagline */}
         <Link href="/" className="flex items-center gap-3 group" aria-label="Pearl Roots & Expeditions Homepage">
           <div className="w-10 h-10 rounded-xl bg-forest flex items-center justify-center text-gold shadow-xs group-hover:scale-[1.02] transition-transform duration-200">
             <Compass className="w-5 h-5 stroke-[2.2]" />
@@ -34,22 +36,23 @@ export default function Navbar() {
             <span className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-forest-dark leading-none">
               Pearl Roots <span className="text-ochre font-sans text-lg font-light">&</span> Expeditions
             </span>
-            <span className="text-caption font-semibold uppercase tracking-wider text-charcoal-muted mt-1 flex items-center gap-1.5">
-              <span>Uganda Living Laboratory</span>
+            <span className="text-[10px] sm:text-caption font-semibold uppercase tracking-wider text-charcoal-muted mt-1 flex items-center gap-1.5">
+              <span>Uganda Social Enterprise</span>
               <span className="w-1 h-1 rounded-full bg-ochre" />
-              <span className="text-forest font-medium">Former UNDP Governance</span>
+              <span className="text-forest font-medium">Founded by Collins & Patricia Ssegawa</span>
             </span>
           </div>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
-          {navLinks.map((link) => {
+        {/* Desktop Navigation Links */}
+        <nav className="hidden xl:flex items-center gap-1" aria-label="Main Navigation">
+          {mainNavLinks.map((link) => {
             const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
             return (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`relative px-3.5 py-2.5 rounded-xl text-body-sm font-medium transition-colors ${
+                className={`relative px-3 py-2 rounded-xl text-body-sm font-medium transition-colors ${
                   isActive
                     ? "text-forest-dark font-semibold"
                     : "text-charcoal-muted hover:text-forest-dark hover:bg-forest/5"
@@ -59,7 +62,7 @@ export default function Navbar() {
                 {isActive && (
                   <motion.div
                     layoutId="navbar-indicator"
-                    className="absolute bottom-0 left-3 right-3 h-0.5 bg-forest rounded-full"
+                    className="absolute bottom-0 left-2 right-2 h-0.5 bg-forest rounded-full"
                     transition={shouldReduceMotion ? { duration: 0 } : { type: "spring", stiffness: 350, damping: 30 }}
                   />
                 )}
@@ -68,28 +71,32 @@ export default function Navbar() {
           })}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-3">
+        {/* Desktop CTAs */}
+        <div className="hidden lg:flex items-center gap-2.5">
           <Link
-            href="/programs"
-            className="btn-press min-h-[44px] inline-flex items-center px-4 py-2 text-body-sm font-medium text-forest hover:text-forest-dark hover:bg-forest/5 rounded-xl"
+            href="/admin"
+            className="btn-press min-h-[44px] inline-flex items-center px-3 py-2 text-body-sm font-medium text-charcoal-muted hover:text-forest-dark rounded-xl"
+            title="Coordinator & Admin Operations Pipeline"
           >
-            Explore Syllabi
+            Admin Ops
           </Link>
+
           <Link
-            href="/educators#builder"
+            href="/contact"
             className="btn-press min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold hover:bg-gold-light text-forest-dark font-bold text-body-sm shadow-xs border border-gold-dark/20"
           >
-            <span>Build Course Proposal</span>
+            <span>Inquire (24h SLA)</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
+        {/* Mobile Menu Toggle Button */}
         <div className="lg:hidden flex items-center gap-2">
           <Link
-            href="/educators#builder"
+            href="/contact"
             className="btn-press min-h-[44px] inline-flex items-center px-3.5 py-2 rounded-xl bg-gold text-forest-dark font-bold text-body-sm shadow-xs"
           >
-            Proposal
+            Inquire
           </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -102,53 +109,48 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Drawer Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: shouldReduceMotion ? "auto" : 0 }}
+            initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: shouldReduceMotion ? "auto" : 0 }}
-            transition={{ duration: shouldReduceMotion ? 0.15 : 0.22, ease: [0.23, 1, 0.32, 1] }}
-            className="lg:hidden border-t border-forest/10 bg-parchment overflow-hidden px-4 py-5 shadow-lg"
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="lg:hidden border-b border-forest/15 bg-parchment overflow-hidden px-4 pt-3 pb-6 space-y-3"
           >
-            <div className="flex flex-col gap-1.5">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`min-h-[44px] flex items-center px-4 py-2.5 rounded-xl text-body-sm font-medium transition-colors ${
-                      isActive ? "bg-forest/10 text-forest-dark font-semibold" : "text-charcoal hover:bg-forest/5"
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                );
-              })}
-
-              <div className="pt-3 border-t border-forest/10 flex flex-col gap-2.5">
+            <nav className="flex flex-col space-y-1" aria-label="Mobile Navigation">
+              {mainNavLinks.map((link) => (
                 <Link
-                  href="/programs"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="btn-press min-h-[44px] flex items-center justify-center w-full text-center py-2.5 rounded-xl border border-forest/20 text-forest font-semibold text-body-sm"
+                  key={link.name}
+                  href={link.href}
+                  className="px-3 py-2.5 rounded-xl text-body font-medium text-forest-dark hover:bg-forest/5"
                 >
-                  Explore Syllabi Directory
+                  {link.name}
                 </Link>
-                <Link
-                  href="/educators#builder"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="btn-press min-h-[44px] flex items-center justify-center w-full text-center py-2.5 rounded-xl bg-gold text-forest-dark font-bold text-body-sm shadow-xs"
-                >
-                  Launch Course Proposal Wizard →
-                </Link>
-              </div>
+              ))}
+              <Link
+                href="/journal"
+                className="px-3 py-2.5 rounded-xl text-body font-medium text-forest-dark hover:bg-forest/5"
+              >
+                Field Journal
+              </Link>
+              <Link
+                href="/admin"
+                className="px-3 py-2.5 rounded-xl text-body font-medium text-ochre hover:bg-forest/5"
+              >
+                Admin Pipeline Dashboard
+              </Link>
+            </nav>
 
-              <div className="mt-3 pt-3 border-t border-forest/10 flex items-center gap-2 text-caption text-charcoal-muted">
-                <ShieldCheck className="w-4 h-4 text-forest shrink-0" />
-                <span>UNDP Governance Pedigree • AMREF Aero-Medical Protocol</span>
-              </div>
+            <div className="pt-3 border-t border-forest/10">
+              <Link
+                href="/contact"
+                className="btn-press min-h-[44px] w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-forest text-parchment font-semibold text-body-sm shadow-xs"
+              >
+                <span>Submit Inquiry (24h Response)</span>
+                <ArrowRight className="w-4 h-4 text-gold" />
+              </Link>
             </div>
           </motion.div>
         )}

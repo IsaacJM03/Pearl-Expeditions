@@ -3,12 +3,12 @@
 import { ShieldCheck, Plane, Building2, Trees, Award, HeartHandshake, Sparkles } from "lucide-react";
 
 const telemetryItems = [
-  { icon: Building2, text: "12 Target Field Station Hubs", badge: "Kibale / Gulu / Elgon" },
-  { icon: Plane, text: "AMREF Aero-Medical Protocol Active", badge: "Airlift Liaison" },
-  { icon: ShieldCheck, text: "1:6 Target Chaperone Ratio", badge: "Safeguarding Protocol" },
-  { icon: Award, text: "UNCST Ethics Permitting Framework", badge: "REC Protocol" },
-  { icon: Trees, text: "Makerere MUBFS Proposed Lab Base", badge: "Canopy Towers" },
-  { icon: HeartHandshake, text: "100% Domestic Spend Target", badge: "Elder Reciprocity" },
+  { icon: Building2, text: "GROW: Pre-Graduation Clinical Electives", badge: "Academic Rigor" },
+  { icon: HeartHandshake, text: "SERVE: Locally Governed Community Placements", badge: "Strict Safeguarding" },
+  { icon: Trees, text: "DISCOVER: Queen Elizabeth NP & Bunyonyi", badge: "Earned Safari" },
+  { icon: Plane, text: "AMREF Aero-Medical Protocol Active", badge: "24/7 Airlift" },
+  { icon: Award, text: "24-Hour Response SLA Intake", badge: "Field Ops Desk" },
+  { icon: ShieldCheck, text: "Collins & Patricia Ssegawa", badge: "Ugandan Leadership" },
 ];
 
 export default function TelemetryTicker() {

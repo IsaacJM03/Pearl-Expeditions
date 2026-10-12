@@ -4,35 +4,33 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { 
-  ArrowRight, 
-  ShieldCheck, 
-  Plane, 
-  Users, 
-  MapPin, 
-  ExternalLink,
-  Award,
-  BookOpen,
+import {
+  ArrowRight,
+  ShieldCheck,
+  Plane,
+  Users,
+  GraduationCap,
   HeartHandshake,
-  CheckCircle2
+  Compass,
+  CheckCircle2,
+  Sparkles,
+  MapPin,
+  ExternalLink,
+  Lock,
+  ChevronRight
 } from "lucide-react";
-import { programs } from "@/data/programs";
-import UgandaInteractiveMap from "@/components/UgandaInteractiveMap";
+import { cmsContent } from "@/data/cmsContent";
 
 export default function HomePage() {
-  const [selectedDiscipline, setSelectedDiscipline] = useState<string>("All");
+  const [selectedPersona, setSelectedPersona] = useState<number>(0);
   const shouldReduceMotion = useReducedMotion();
 
-  const filteredPrograms = selectedDiscipline === "All"
-    ? programs
-    : programs.filter((p) => p.discipline === selectedDiscipline);
-
-  const categories = ["All", "Biological Sciences", "Peace & Conflict", "Agro-Ecology & CAS"];
+  const currentPersona = cmsContent.audiencePersonas[selectedPersona];
 
   return (
     <div className="w-full space-y-20 pb-20">
-      {/* 1. HERO SECTION */}
-      <section className="relative pt-12 sm:pt-18 pb-10 overflow-hidden bg-topo">
+      {/* 1. DUAL-GATEWAY HERO SECTION */}
+      <section className="relative pt-12 sm:pt-20 pb-12 overflow-hidden bg-topo">
         <div className="container-shell">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             <motion.div
@@ -41,52 +39,59 @@ export default function HomePage() {
               transition={{ duration: 0.28, ease: [0.23, 1, 0.32, 1] }}
               className="lg:col-span-7 space-y-6"
             >
-              <p className="text-eyebrow">
-                Uganda Living Laboratory • Ex-UNDP Governance
-              </p>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-forest/10 border border-forest/15 text-forest text-caption font-semibold">
+                <Sparkles className="w-3.5 h-3.5 text-ochre" />
+                <span>Locally Founded in Uganda by Collins & Patricia Ssegawa</span>
+              </div>
 
               <h1 className="text-display text-forest-dark">
-                Uganda as an <span className="italic font-normal text-ochre">Open-Air</span> Academic Laboratory
+                Gain global experience. <span className="italic font-normal text-ochre">Empower</span> communities. Explore the Pearl of Africa.
               </h1>
 
-              <p className="text-body-lg max-w-2xl">
-                Turnkey, accredited field schools for university faculties and IB schools. Anchored by resident Makerere University research stations, ex-UNDP governance, and 24/7 AMREF aero-medical safety.
+              <p className="text-body-lg max-w-2xl text-charcoal-muted">
+                Pre-graduation clinical electives, ethical volunteer placements, and purposeful wildlife safaris in Uganda. Impact comes first under local Ugandan leadership; the safari is your earned reward.
               </p>
 
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
                 <Link
-                  href="/educators#builder"
+                  href="/contact"
                   className="btn-press min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gold hover:bg-gold-light text-forest-dark font-bold text-body-sm shadow-xs border border-gold-dark/20 text-center"
                 >
-                  <span>Build Course Proposal</span>
+                  <span>Inquire for Placement</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
                 <Link
-                  href="/programs"
+                  href="/programs/student-placements"
                   className="btn-press min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border border-forest/20 hover:border-forest/40 bg-parchment-card text-forest font-semibold text-body-sm text-center shadow-xs"
                 >
-                  <span>Explore Field Syllabi</span>
+                  <span>Explore Placement Sectors</span>
                 </Link>
               </div>
 
-              {/* Restrained Trust Row - Distinct Semantic Badges */}
-              <div className="pt-4 flex flex-wrap items-center gap-y-3 gap-x-6 text-body-sm text-charcoal-muted border-t border-forest/10">
-                <span className="inline-flex items-center gap-2 font-medium text-forest-dark">
-                  <ShieldCheck className="w-4 h-4 text-forest shrink-0" />
-                  <span>UNCST Ethics Permitting Framework</span>
-                </span>
-                <span className="inline-flex items-center gap-2 font-medium text-forest-dark">
-                  <Plane className="w-4 h-4 text-ochre shrink-0" />
-                  <span>AMREF Aero-Evacuation Protocol</span>
-                </span>
-                <span className="inline-flex items-center gap-2 font-medium text-forest-dark">
-                  <Users className="w-4 h-4 text-forest shrink-0" />
-                  <span>1:6 Target Chaperone Ratio</span>
-                </span>
+              {/* Above-the-Fold Trust Signals Row */}
+              <div className="pt-4 border-t border-forest/10 space-y-3">
+                <div className="flex flex-wrap items-center gap-y-2 gap-x-6 text-body-sm text-forest-dark font-medium">
+                  <span className="inline-flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-forest shrink-0" />
+                    <span>AMREF Flying Doctors Aero-Evacuation</span>
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <Users className="w-4 h-4 text-ochre shrink-0" />
+                    <span>24/7 Dedicated In-Country Coordinators</span>
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <Lock className="w-4 h-4 text-forest shrink-0" />
+                    <span>Strict Child Safeguarding Protocols</span>
+                  </span>
+                </div>
+                <p className="text-[11px] text-charcoal-muted italic">
+                  [VERIFY BEFORE PUBLISHING: Hospital, School & NGO partner MOUs pending formal annual renewal]
+                </p>
               </div>
             </motion.div>
 
+            {/* Hero Visual Block */}
             <motion.div
               initial={{ opacity: 0, transform: shouldReduceMotion ? "scale(1)" : "scale(0.98)" }}
               animate={{ opacity: 1, transform: "scale(1)" }}
@@ -96,314 +101,284 @@ export default function HomePage() {
               <div className="relative aspect-4/3 sm:aspect-5/4 rounded-2xl overflow-hidden shadow-card border border-forest/15">
                 <Image
                   src="/images/hero-rainforest.jpg"
-                  alt="Kibale National Park Albertine Rift Rainforest Canopy"
+                  alt="Uganda Rainforest and Albertine Rift Valley"
                   fill
                   priority
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-forest-dark/75 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-t from-forest-dark/85 via-forest-dark/30 to-transparent" />
 
-                <div className="absolute bottom-4 left-4 right-4 bg-forest-dark/90 backdrop-blur-md px-4 py-3 rounded-xl border border-forest-light/20 text-parchment flex items-center justify-between text-caption">
+                <div className="absolute bottom-5 left-5 right-5 text-parchment space-y-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="font-medium text-parchment">MUBFS Kanyawara Station</span>
+                    <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+                    <span className="text-caption font-mono uppercase tracking-wider text-gold">
+                      The Pearl Principle
+                    </span>
                   </div>
-                  <span className="text-caption text-gold font-mono">Albertine Rift (0°34&apos;N)</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. INSTITUTIONAL ALLIANCES STRIP */}
-      <section className="border-y border-forest/10 bg-parchment-muted/60 py-8">
-        <div className="container-shell">
-          <p className="text-caption font-bold text-charcoal-muted text-center mb-6">
-            Planned Academic Field Alliances & Governance Partners
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5 items-center text-center">
-            <div className="p-4 rounded-2xl bg-parchment border border-forest/10 shadow-subtle">
-              <span className="font-serif font-bold text-base text-forest-dark block">UNCST</span>
-              <span className="text-caption text-charcoal-muted">Science & Tech Council</span>
-            </div>
-            <div className="p-4 rounded-2xl bg-parchment border border-forest/10 shadow-subtle">
-              <span className="font-serif font-bold text-base text-forest-dark block">Makerere MUBFS</span>
-              <span className="text-caption text-charcoal-muted">Biological Field Station</span>
-            </div>
-            <div className="p-4 rounded-2xl bg-parchment border border-forest/10 shadow-subtle">
-              <span className="font-serif font-bold text-base text-forest-dark block">Gulu Univ IPSS</span>
-              <span className="text-caption text-charcoal-muted">Peace & Conflict Hub</span>
-            </div>
-            <div className="p-4 rounded-2xl bg-parchment border border-forest/10 shadow-subtle">
-              <span className="font-serif font-bold text-base text-forest-dark block">AMREF Flying Docs</span>
-              <span className="text-caption text-charcoal-muted">Aero-Medical Protocol</span>
-            </div>
-            <div className="p-4 rounded-2xl bg-parchment border border-forest/10 shadow-subtle">
-              <span className="font-serif font-bold text-base text-forest-dark block">UWA Research</span>
-              <span className="text-caption text-charcoal-muted">Wildlife Permitting</span>
-            </div>
-            <div className="p-4 rounded-2xl bg-parchment border border-forest/10 shadow-subtle">
-              <span className="font-serif font-bold text-base text-forest-dark block">Ker Kwaro Acholi</span>
-              <span className="text-caption text-charcoal-muted">Customary Justice Forum</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. FLAGSHIP TURNKEY SYLLABI (STANDARDIZED CARD ANATOMY) */}
-      <section className="container-shell space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-2 max-w-xl">
-            <span className="text-eyebrow">
-              Turnkey Field Syllabi
-            </span>
-            <h2 className="text-h2 text-forest-dark">
-              Curricula Ready for Department Approval
-            </h2>
-            <p className="text-body">
-              Select a discipline below to inspect daily schedules, competencies, and research station setups.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-1.5 flex-wrap p-1 bg-parchment-muted rounded-xl border border-forest/10 self-start md:self-auto">
-            {categories.map((cat) => {
-              const isSelected = selectedDiscipline === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedDiscipline(cat)}
-                  className={`btn-press min-h-[44px] relative px-4 py-2 rounded-lg text-body-sm font-semibold cursor-pointer ${
-                    isSelected ? "text-forest-dark" : "text-charcoal-muted hover:text-forest"
-                  }`}
-                >
-                  {isSelected && (
-                    <motion.div
-                      layoutId="homepageCategoryPill"
-                      className="absolute inset-0 bg-parchment-card rounded-lg shadow-subtle border border-forest/15"
-                      transition={shouldReduceMotion ? { duration: 0 } : { type: "spring", stiffness: 350, damping: 28 }}
-                    />
-                  )}
-                  <span className="relative z-10">{cat}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredPrograms.map((prog, index) => (
-            <motion.div
-              key={prog.slug}
-              initial={{ opacity: 0, transform: shouldReduceMotion ? "translateY(0)" : "translateY(12px)" }}
-              whileInView={{ opacity: 1, transform: "translateY(0)" }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.24, delay: index * 0.04, ease: [0.23, 1, 0.32, 1] }}
-              className="hover-lift group rounded-2xl bg-parchment-card border border-forest/15 overflow-hidden shadow-subtle flex flex-col justify-between"
-            >
-              {/* Card Anatomy: 1. Image with Clean Badges */}
-              <div className="relative aspect-16/10 w-full overflow-hidden">
-                <Image
-                  src={prog.heroImage}
-                  alt={prog.title}
-                  fill
-                  className="object-cover group-hover:scale-[1.02] transition-transform duration-300 ease-out"
-                />
-                <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between">
-                  <span className="px-3 py-1 rounded-full bg-forest-dark/85 backdrop-blur-md text-gold font-bold text-caption border border-gold/30">
-                    {prog.duration}
-                  </span>
-                  <span className="px-3 py-1 rounded-full bg-parchment/95 backdrop-blur-md text-forest-dark font-semibold text-caption shadow-xs">
-                    {prog.credits}
-                  </span>
-                </div>
-              </div>
-
-              {/* Card Anatomy: 2. Eyebrow, 3. Title, 4. Meta Row, 5. Summary, 6. Outcomes, 7. CTA */}
-              <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
-                <div className="space-y-3">
-                  <span className="text-eyebrow block">
-                    {prog.discipline}
-                  </span>
-
-                  <h3 className="text-h3 text-forest-dark">
-                    {prog.title}
-                  </h3>
-
-                  <p className="text-body-sm text-charcoal-muted leading-relaxed line-clamp-2">
-                    {prog.shortDescription}
+                  <p className="font-serif text-lg font-bold text-parchment leading-snug">
+                    "Impact comes first, and the adventure is the earned reward."
                   </p>
-
-                  <div className="p-3 rounded-xl bg-forest/5 border border-forest/10 text-body-sm text-forest-dark flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-ochre shrink-0" />
-                    <span className="font-medium truncate">{prog.fieldStation}</span>
-                  </div>
-
-                  <div className="space-y-1.5 pt-1">
-                    <p className="text-body-sm font-bold text-charcoal-muted">
-                      Core Field Competencies:
-                    </p>
-                    <ul className="space-y-1.5 text-body-sm text-charcoal">
-                      {prog.learningOutcomes.slice(0, 3).map((out, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-forest shrink-0 mt-0.5" />
-                          <span className="line-clamp-1">{out}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-forest/10 flex items-center justify-between gap-3">
-                  <span className="text-body-sm font-mono text-charcoal-muted">
-                    Est. <strong className="text-forest-dark text-base font-serif">${prog.priceEstimateUSD.toLocaleString()}</strong> / student
-                  </span>
-
-                  <Link
-                    href={`/programs/${prog.slug}`}
-                    className="btn-press min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-forest hover:bg-forest-dark text-parchment font-semibold text-body-sm shadow-xs"
-                  >
-                    <span>View Syllabus</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                  <p className="text-caption text-parchment/80">
+                    Collins Ssegawa — Raised at Watoto Mpigi, Co-Founder
+                  </p>
                 </div>
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. THREE-PILLAR SECTION: GROW • SERVE • DISCOVER */}
+      <section className="container-shell">
+        <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
+          <span className="text-eyebrow text-ochre">The Three Pillars</span>
+          <h2 className="text-h2 text-forest-dark">A Connected Journey Designed for Real Impact</h2>
+          <p className="text-body text-charcoal-muted">
+            We reject commercialized 'voluntourism'. Every placement is built on academic rigor and local community sovereignty, culminating in the earned reward of wildlife discovery.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {cmsContent.pillars.map((pillar) => (
+            <div
+              key={pillar.id}
+              className="p-8 rounded-2xl bg-white border border-forest/15 shadow-card hover:shadow-lift transition-all space-y-4 flex flex-col justify-between"
+            >
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-forest/10 text-forest flex items-center justify-center">
+                  {pillar.id === "grow" && <GraduationCap className="w-6 h-6 text-forest" />}
+                  {pillar.id === "serve" && <HeartHandshake className="w-6 h-6 text-ochre" />}
+                  {pillar.id === "discover" && <Compass className="w-6 h-6 text-gold-dark" />}
+                </div>
+
+                <div>
+                  <span className="text-caption font-bold uppercase tracking-wider text-ochre">Pillar</span>
+                  <h3 className="font-serif text-2xl font-bold text-forest-dark">{pillar.title}</h3>
+                  <p className="text-body-sm font-semibold text-forest mt-0.5">{pillar.tagline}</p>
+                </div>
+
+                <p className="text-body-sm text-charcoal-muted leading-relaxed font-light">
+                  {pillar.description}
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-forest/10">
+                {pillar.id === "grow" && (
+                  <Link
+                    href="/programs/student-placements"
+                    className="inline-flex items-center gap-1.5 text-body-sm font-bold text-forest hover:text-ochre transition-colors"
+                  >
+                    <span>View Student Electives</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
+                {pillar.id === "serve" && (
+                  <Link
+                    href="/safeguarding"
+                    className="inline-flex items-center gap-1.5 text-body-sm font-bold text-forest hover:text-ochre transition-colors"
+                  >
+                    <span>Our Safeguarding Charter</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
+                {pillar.id === "discover" && (
+                  <Link
+                    href="/tours/5-day-post-placement-safari"
+                    className="inline-flex items-center gap-1.5 text-body-sm font-bold text-forest hover:text-ochre transition-colors"
+                  >
+                    <span>5-Day Post-Placement Safari</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* 4. GEOGRAPHIC LIVING LAB MAP */}
-      <section className="container-shell space-y-6">
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-eyebrow">
-            Geographic Living Laboratory
-          </span>
-          <h2 className="text-h2 text-forest-dark">
-            Research Stations Across Uganda
-          </h2>
-          <p className="text-body">
-            Inspect our research hubs, long-term ecology stations, and staged AMREF aero-medical airfields in real time.
-          </p>
-        </div>
+      {/* 3. 3-WAY AUDIENCE SELECTOR */}
+      <section className="bg-forest-dark text-parchment py-16">
+        <div className="container-shell space-y-10">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-eyebrow text-gold">Choose Your Pathway</span>
+            <h2 className="text-h2 text-parchment">How Do You Wish to Engage with Uganda?</h2>
+            <p className="text-body text-parchment/80 font-light">
+              Select your traveler profile below to explore curated sectors, safety protocols, and institutional documentation.
+            </p>
+          </div>
 
-        <UgandaInteractiveMap />
-      </section>
+          {/* Persona Tabs */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {cmsContent.audiencePersonas.map((persona, idx) => (
+              <button
+                key={persona.id}
+                onClick={() => setSelectedPersona(idx)}
+                className={`btn-press min-h-[44px] px-6 py-3 rounded-xl text-body-sm font-bold transition-all cursor-pointer ${
+                  selectedPersona === idx
+                    ? "bg-gold text-forest-dark shadow-xs"
+                    : "bg-forest/50 text-parchment/80 hover:bg-forest hover:text-parchment border border-forest-surface"
+                }`}
+              >
+                {persona.label}
+              </button>
+            ))}
+          </div>
 
-      {/* 5. INTEGRATED FOUNDER GOVERNANCE & DUTY-OF-CARE */}
-      <section className="container-shell">
-        <div className="rounded-2xl bg-forest-dark text-parchment p-8 sm:p-12 border border-forest-surface shadow-card relative overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
-              <div className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border-2 border-gold/80 shadow-card">
-                <Image
-                  src="/images/collins-founder.jpg"
-                  alt="Collins Ssegawa, Founder of Pearl Roots & Expeditions"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+          {/* Active Persona Spotlight Card */}
+          <div className="bg-forest/40 border border-forest-surface rounded-2xl p-8 sm:p-10 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className="md:col-span-8 space-y-4">
+              <span className="text-caption font-mono uppercase tracking-widest text-gold px-3 py-1 rounded-full bg-forest border border-forest-surface inline-block">
+                {currentPersona.badge}
+              </span>
+              <h3 className="font-serif text-2xl font-bold text-parchment">{currentPersona.label}</h3>
+              <p className="text-body text-parchment/85 leading-relaxed font-light">
+                {currentPersona.description}
+              </p>
 
-              <div>
-                <h3 className="font-serif text-2xl font-bold text-parchment">Collins Ssegawa</h3>
-                <p className="text-body-sm text-gold font-medium mt-0.5">Founder & Expedition Director</p>
-                <p className="text-body-sm text-parchment/80 mt-1 font-light">
-                  Former United Nations Development Programme (UNDP) Officer
-                </p>
-              </div>
-
-              <div className="pt-2 flex flex-col w-full gap-2.5">
+              <div className="pt-2 flex flex-wrap items-center gap-3">
                 <Link
-                  href="/about"
-                  className="btn-press min-h-[44px] inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-forest hover:bg-forest-light text-parchment font-semibold text-body-sm border border-forest-light/40 text-center"
+                  href={currentPersona.primaryAction.href}
+                  className="btn-press min-h-[44px] inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold text-forest-dark font-bold text-body-sm shadow-xs"
                 >
-                  <span>Read Full Story</span>
+                  <span>{currentPersona.primaryAction.text}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
-                <a
-                  href="https://wa.me/256700892410?text=Hello%20Collins,%20I%20would%20like%20to%20discuss%20a%20university%20field%20school%20partnership."
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn-press min-h-[44px] inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-parchment/20 hover:bg-parchment/10 text-parchment font-semibold text-body-sm text-center"
+                <Link
+                  href={currentPersona.secondaryAction.href}
+                  className="btn-press min-h-[44px] inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-parchment/20 text-parchment hover:bg-forest/40 text-body-sm font-medium"
                 >
-                  <span>WhatsApp Collins</span>
-                  <ExternalLink className="w-4 h-4 text-gold" />
-                </a>
+                  <span>{currentPersona.secondaryAction.text}</span>
+                </Link>
               </div>
             </div>
 
-            <div className="lg:col-span-8 space-y-6">
-              <div className="space-y-2">
-                <span className="text-body-sm font-bold text-gold flex items-center gap-2">
-                  <Award className="w-4 h-4 text-gold" />
-                  <span>The UN Governance Standard</span>
-                </span>
-
-                <h3 className="text-h2 text-parchment leading-snug">
-                  &ldquo;University Risk Committees Do Not Book Safaris; They Approve Duty-of-Care Frameworks.&rdquo;
-                </h3>
-
-                <p className="text-body-lg text-parchment/85 font-light leading-relaxed">
-                  Having served with the United Nations Development Programme in Kampala, I designed Pearl Roots to eliminate the divide between academic departments and field logistics:
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                <div className="p-5 rounded-2xl bg-forest/50 border border-forest-light/30 space-y-2.5">
-                  <BookOpen className="w-5 h-5 text-gold" />
-                  <h4 className="font-serif font-bold text-base text-parchment">Accredited Syllabi</h4>
-                  <p className="text-body-sm text-parchment/85 font-light leading-relaxed">
-                    Curricula structured for 3–6 US semester credit hours with access to partner academic research facilities.
-                  </p>
-                </div>
-
-                <div className="p-5 rounded-2xl bg-forest/50 border border-forest-light/30 space-y-2.5">
-                  <HeartHandshake className="w-5 h-5 text-ochre-light" />
-                  <h4 className="font-serif font-bold text-base text-parchment">Ethical Reciprocity</h4>
-                  <p className="text-body-sm text-parchment/85 font-light leading-relaxed">
-                    Direct collaboration with Acholi community elders and coffee co-ops, advancing UN SDGs 4, 13, 15, and 17.
-                  </p>
-                </div>
-
-                <div className="p-5 rounded-2xl bg-forest/50 border border-forest-light/30 space-y-2.5">
-                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                  <h4 className="font-serif font-bold text-base text-parchment">Duty of Care</h4>
-                  <p className="text-body-sm text-parchment/85 font-light leading-relaxed">
-                    AMREF aero-medical evacuation protocol, Level-4 ICU trauma liaison, and 1:6 target chaperone ratio.
-                  </p>
-                </div>
-              </div>
+            <div className="md:col-span-4 p-5 rounded-xl bg-forest-dark/70 border border-forest-surface text-caption space-y-2.5">
+              <span className="font-bold uppercase tracking-wider text-gold block">Our Commitment</span>
+              <p className="text-parchment/80 leading-relaxed font-light">
+                • 100% Supervised & Vetted
+              </p>
+              <p className="text-parchment/80 leading-relaxed font-light">
+                • Direct Community Benefit
+              </p>
+              <p className="text-parchment/80 leading-relaxed font-light">
+                • 24-Hour Inquiry Response Guarantee
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. CALL TO ACTION BANNER */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 text-center space-y-6">
-        <span className="text-eyebrow">
-          Ready to Deploy Your Department?
-        </span>
-        <h2 className="text-h2 text-forest-dark">
-          Stage an Accredited Field Course for 2026/27
-        </h2>
-        <p className="text-body-lg max-w-xl mx-auto leading-relaxed">
-          Use our interactive proposal wizard to select your curriculum, customize cohort sizing, and export an institutional proposal dossier in minutes.
-        </p>
+      {/* 4. FOUNDERS' STORY TEASER */}
+      <section className="container-shell">
+        <div className="bg-white rounded-3xl border border-forest/15 shadow-card overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-center">
+          <div className="lg:col-span-5 relative aspect-4/3 sm:aspect-5/4 lg:aspect-auto lg:h-full min-h-[360px]">
+            <Image
+              src="/images/collins-founder.jpg"
+              alt="Collins Ssegawa, Co-Founder of Pearl Roots & Expeditions"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-forest-dark/80 via-transparent to-transparent lg:hidden" />
+          </div>
 
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+          <div className="lg:col-span-7 p-8 sm:p-12 space-y-5">
+            <span className="text-eyebrow text-ochre">Authentic Ugandan Heritage</span>
+            <h2 className="text-h2 text-forest-dark">
+              From Watoto Mpigi to Ethical Fieldwork Leadership
+            </h2>
+            <p className="text-body text-charcoal leading-relaxed font-light">
+              Collins Ssegawa lost both parents by 2006 and grew up in the Watoto community homes in Mpigi. There, he saw how volunteers change the course of young lives when guided with humility and local mentorship.
+            </p>
+            <p className="text-body text-charcoal leading-relaxed font-light">
+              After spending 5+ years at the Institute of Field Research Center managing field logistics for international university students and independent travelers, Collins and his wife Patricia co-founded Pearl Roots & Expeditions to make educational travel reciprocal, rigorous, and dignified.
+            </p>
+
+            <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <Link
+                href="/about-and-safety"
+                className="btn-press min-h-[44px] inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-forest text-parchment font-semibold text-body-sm shadow-xs hover:bg-forest-light"
+              >
+                <span>Read Full Founder Story & Safety Protocol</span>
+                <ArrowRight className="w-4 h-4 text-gold" />
+              </Link>
+            </div>
+            <p className="text-[11px] text-charcoal-muted italic">
+              [CONFIRM: Collins and Patricia approval of the biographical copy wording]
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. POST-PLACEMENT SAFARI TEASER ("THE EARNED REWARD") */}
+      <section className="container-shell">
+        <div className="rounded-3xl bg-parchment border border-forest/15 p-8 sm:p-12 space-y-8">
+          <div className="max-w-2xl space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ochre/10 text-ochre text-caption font-bold">
+              <Compass className="w-3.5 h-3.5" />
+              <span>The Earned Reward</span>
+            </div>
+            <h2 className="text-h2 text-forest-dark">5-Day Post-Placement Safari Add-On</h2>
+            <p className="text-body text-charcoal-muted">
+              Complete your hospital elective or community placement, then transition directly into Queen Elizabeth National Park, the Kazinga Channel, and Lake Bunyonyi.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-5 rounded-2xl bg-white border border-forest/10 space-y-2">
+              <h4 className="font-serif font-bold text-forest-dark">Queen Elizabeth NP</h4>
+              <p className="text-caption text-charcoal-muted leading-relaxed">
+                Dawn game drives across Kasenyi plains tracking lions, elephants, and cape buffalo herds.
+              </p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-forest/10 space-y-2">
+              <h4 className="font-serif font-bold text-forest-dark">Kazinga Channel Boat Cruise</h4>
+              <p className="text-caption text-charcoal-muted leading-relaxed">
+                Cruise alongside hundreds of hippos, bathing elephants, and magnificent Nile water birds.
+              </p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-forest/10 space-y-2">
+              <h4 className="font-serif font-bold text-forest-dark">Lake Bunyonyi Relaxation</h4>
+              <p className="text-caption text-charcoal-muted leading-relaxed">
+                Dugout canoeing and swimming in the bilharzia-free waters of Uganda's deepest highland lake.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-forest/10">
+            <p className="text-body-sm text-charcoal-muted font-medium">
+              Easily added at application time or near the conclusion of your placement.
+            </p>
+            <Link
+              href="/tours/5-day-post-placement-safari"
+              className="btn-press min-h-[44px] inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold hover:bg-gold-light text-forest-dark font-bold text-body-sm shadow-xs border border-gold-dark/20"
+            >
+              <span>Explore 5-Day Safari Itinerary</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. ETHICAL SAFEGUARDING CALLOUT */}
+      <section className="container-shell">
+        <div className="p-8 sm:p-10 rounded-2xl bg-forest-dark text-parchment border border-forest flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 max-w-xl">
+            <span className="text-caption font-mono uppercase tracking-widest text-gold">Zero Tolerance</span>
+            <h3 className="font-serif text-2xl font-bold text-parchment">
+              Our Child Safeguarding & Ethical Policy
+            </h3>
+            <p className="text-body-sm text-parchment/80 font-light">
+              No unsupervised contact with children. No unconsented social media photos. Observation-only medical practice. Transparent fee breakdown.
+            </p>
+          </div>
+
           <Link
-            href="/educators#builder"
-            className="btn-press min-h-[44px] w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gold hover:bg-gold-light text-forest-dark font-bold text-body-sm shadow-xs flex items-center justify-center gap-2 border border-gold-dark/20"
+            href="/safeguarding"
+            className="btn-press min-h-[44px] inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gold text-forest-dark font-bold text-body-sm shadow-xs shrink-0"
           >
-            <span>Launch Course Proposal Wizard</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <Link
-            href="/contact"
-            className="btn-press min-h-[44px] w-full sm:w-auto px-8 py-3.5 rounded-xl border border-forest/20 hover:border-forest/40 bg-parchment-card text-forest font-semibold text-body-sm shadow-xs flex items-center justify-center"
-          >
-            Request Institutional Consultation
+            <span>Read Safeguarding Charter</span>
+            <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
       </section>

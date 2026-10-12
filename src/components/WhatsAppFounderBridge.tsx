@@ -6,10 +6,10 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { MessageSquare, X, ArrowUpRight, ShieldCheck, Clock } from "lucide-react";
 
 const quickPrompts = [
-  { label: "Kibale Field Dates 2026/27", text: "Hello Collins, I'd like to check field station availability for our Biology department in Kibale for 2026/27." },
-  { label: "Gulu Peace Studies Syllabus", text: "Hello Collins, I am reviewing the Transitional Justice curriculum for an upcoming university field course." },
-  { label: "RAMS Risk & AMREF Protocols", text: "Hello Collins, our Study Abroad Risk Committee needs the AMREF and emergency evacuation protocols." },
-  { label: "Custom Department Proposal", text: "Hello Collins, we want to design a custom 10-14 day hybrid field school in Uganda." },
+  { label: "Medical & Clinical Electives", text: "Hello Collins, I'd like to check hospital elective availability and logbook sign-off for our upcoming medical elective in Uganda." },
+  { label: "Independent Volunteer Inquiries", text: "Hello Collins, I am interested in independent volunteering with community day schools and host family accommodation." },
+  { label: "5-Day Post-Placement Safari", text: "Hello Collins, I would like details on booking the 5-day Queen Elizabeth & Lake Bunyonyi safari after my placement." },
+  { label: "University RAMS & Safety Pack", text: "Hello Collins, our Study Abroad Risk Committee needs the institutional RAMS and AMREF emergency evacuation protocols." },
 ];
 
 export default function WhatsAppFounderBridge() {
@@ -87,10 +87,10 @@ export default function WhatsAppFounderBridge() {
                 </div>
                 <div>
                   <h4 className="font-serif font-bold text-base text-parchment leading-tight">Collins Ssegawa</h4>
-                  <p className="text-body-sm text-gold font-medium">Founder & Expedition Director</p>
+                  <p className="text-body-sm text-gold font-medium">Co-Founder & Field Operations Director</p>
                   <p className="text-body-sm text-parchment/80 flex items-center gap-1 mt-0.5 font-light">
                     <ShieldCheck className="w-3.5 h-3.5 text-gold" />
-                    <span>Ex-UNDP Officer • Entebbe/Kampala (GMT+3)</span>
+                    <span>Institute of Field Research Center Alum • Watoto Mpigi</span>
                   </p>
                 </div>
               </div>
